@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/vue/1.0.26/vue.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aurora.js/0.4.2/aurora.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aurora.js-flac/0.2.1/flac.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aurora.js-mp3/0.1.0/mp3.min.js"></script>
+
+</head>
+
+<body id="app">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>GrooveTorrent</h1>
+            <p>Pure Web P2P Music Sharing based on WebRTC and BitTorrent</p>
+            <h4>Supported formats: MP3 FLAC</h4>
+            <h6>Warning: Distributing copyrighted content might be illegal in your region</h6>             
+        </div>
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                <div class="alert alert-success text-center" role="alert">
+                    <div class="btn-group" role="group">
+                        <button v-if="isPlaying" type="button" class="btn btn-default">Play
+                            <span class="glyphicon glyphicon-play"></span>
+                        </button>
+                        <button v-else type="button" class="btn btn-default"> Stop
+                            <span class="glyphicon glyphicon-stop"></span>
+                        </button>
+                        <button type="button" class="btn btn-default">{{currentSong.currentTime}}/{{currentSong.duration}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-2 col-xs-offset-5">
+                <label class="btn btn-default btn-file" style="max-width:100%;min-width:120px;"> Share A Song 
+                <input type="file" id="input" v-on:change="onFileSelect($event.target.files[0])" accept=".mp3,.flac" style="display: none;">
+                </label>
+            </div>
+        </div>
+        <div class=" table-responsive ">
+            <table class="table table-striped ">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Peers</th>
+                        <th>Up/s</th>
+                        <th>Down/s</th>
+                        <th>%</th>
+                        <th>State</th>
+                        <th>Play</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="song in songs " v-bind:class="{info: currentSong==song} ">
+                        <td>{{song.name}}</td>
+                        <td>{{song.peers}}</td>
+                        <td>{{song.upload}}</td>
+                        <td>{{song.download}}</td>
+                        <td>{{song.percentage}}</td>
+                        <td>{{song.state}}</td>
+                        <td><span class="glyphicon glyphicon-play-circle " aria-hidden="true " v-on:click="play(song) "></span></td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+
+
+
+
+    <!--deps-->
+    <script src="https://cdn.jsdelivr.net/bluebird/3.4.1/bluebird.min.js "></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js " integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa "
+        crossorigin="anonymous "></script>
+    <script src="https://cdn.jsdelivr.net/webtorrent/latest/webtorrent.min.js "></script>
+    <script type="text/javascript " src="app.js " charset="utf-8 "></script>
+</body>
+
+</html>
